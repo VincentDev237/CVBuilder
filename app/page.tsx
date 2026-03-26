@@ -143,7 +143,7 @@ export default function Home() {
             <div className="mb-4 flex justify-between items-center">
               <h1 className="text-2xl font-bold italic">
                 Générateur de
-                <span className="text-primary">CV</span>
+                <span className="text-primary"> CV</span>
               </h1>
               <button
                 className="btn btn-primary"

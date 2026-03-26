@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CVBuilder
 
-## Getting Started
+Générateur de CV est une application web moderne pour créer et personnaliser des CV professionnels. Construite avec Next.js, React, Tailwind CSS et DaisyUI, elle offre une interface intuitive pour saisir vos informations et générer un CV au format PDF.
 
-First, run the development server:
+## Fonctionnalités
+
+- **Formulaire de détails personnels** : Nom, email, téléphone, adresse, poste recherché, description.
+- **Expériences professionnelles** : Ajoutez vos expériences avec titre, entreprise, dates et description.
+- **Éducation** : Diplômes, écoles et périodes d'études.
+- **Langues** : Compétences linguistiques avec niveaux (débutant, intermédiaire, avancé).
+- **Compétences et loisirs** : Listes personnalisables.
+- **Prévisualisation en temps réel** : Visualisez votre CV avec différents thèmes (cupcake, dark, etc.).
+- **Téléchargement PDF** : Exportez votre CV en PDF haute qualité.
+- **Thèmes personnalisables** : Choisissez parmi 35 thèmes intégrés.
+
+## Technologies utilisées
+
+- **Next.js 16** : Framework React pour le rendu côté serveur.
+- **React 19** : Bibliothèque pour l'interface utilisateur.
+- **Tailwind CSS v4** : Framework CSS utilitaire.
+- **DaisyUI v5** : Composants UI basés sur Tailwind.
+- **html2canvas-pro** : Pour la capture d'écran en PDF.
+- **jsPDF** : Génération de PDF.
+- **Lucide React** : Icônes.
+- **TypeScript** : Typage statique.
+
+## Installation et utilisation
+
+### Prérequis
+
+- Node.js (version 18 ou supérieure)
+- npm, yarn, pnpm ou bun
+
+### Téléchargement
+
+1. Clonez le repository :
+   ```bash
+   git clone https://github.com/votre-utilisateur/cvbuilder.git
+   cd cvbuilder
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   npm install
+   # ou
+   yarn install
+   # ou
+   pnpm install
+   # ou
+   bun install
+   ```
+
+3. Lancez le serveur de développement :
+   ```bash
+   npm run dev
+   # ou
+   yarn dev
+   # ou
+   pnpm dev
+   # ou
+   bun dev
+   ```
+
+4. Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
+
+### Utilisation
+
+1. **Remplissez les formulaires** : Commencez par vos détails personnels, puis ajoutez expériences, éducations, langues, compétences et loisirs.
+2. **Prévisualisez** : Utilisez le bouton "Prévisualiser" pour voir votre CV en temps réel.
+3. **Changez de thème** : Sélectionnez un thème dans le menu déroulant pour personnaliser l'apparence.
+4. **Téléchargez** : Cliquez sur "Télécharger" dans la modal de prévisualisation pour exporter en PDF.
+
+### Construction pour la production
+
+Pour construire l'application pour la production :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Déploiement
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Déployez facilement sur Vercel, Netlify ou tout autre plateforme supportant Next.js.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contribution
 
-## Learn More
+Les contributions sont les bienvenues ! Ouvrez une issue ou une pull request sur GitHub.
 
-To learn more about Next.js, take a look at the following resources:
+## Licence
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ce projet est sous licence MIT.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Support
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Pour des questions ou des problèmes, ouvrez une issue sur [GitHub](https://github.com/votre-utilisateur/cvbuilder/issues).
