@@ -1,65 +1,218 @@
+"use client";
+import { Eye, RotateCw } from "lucide-react";
 import Image from "next/image";
+import PersonalDetailsForm from "./components/PersonnalDetailsForm";
+import ExperienceForm from "./components/ExperienceForm";
+import EducationForm from "./components/EducationForm";
+import LanguageForm from "./components/LanguageForm";
+import { Experience, PersonalDetails, Education, Language } from "@/type";
+import { useState } from "react";
+import { educationsPreset, experiencesPreset, languagesPreset, personalDetailsPreset } from "@/presets";
+import CVPreview from "./components/CVPreview";
 
 export default function Home() {
+  const [personalDetails, setPersonnalDetails] = useState<PersonalDetails>(personalDetailsPreset)
+  const [file, setFile] = useState<File | null>(null);
+  const [theme, setTheme] = useState<string>('cupcake')
+  const [zoom, setZoom] = useState<number>(163)
+  const [experiences, setExperience] = useState<Experience[]>(experiencesPreset)
+  const [educations, setEducations] = useState<Education[]>(educationsPreset)
+  const [languages, setLanguages] = useState<Language[]>(languagesPreset)
+
+  const themes = [
+    'light',
+    'dark',
+    'cupcake',
+    'bumblebee',
+    'emerald',
+    'corporate',
+    'synthwave',
+    'retro',
+    'cyberpunk',
+    'valentine',
+    'halloween',
+    'garden',
+    'forest',
+    'aqua',
+    'lofi',
+    'pastel',
+    'fantasy',
+    'wireframe',
+    'black',
+    'luxury',
+    'dracula',
+    'cmyk',
+    'autumn',
+    'business',
+    'acid',
+    'lemonade',
+    'night',
+    'coffee',
+    'winter',
+    'dim',
+    'nord',
+    'sunset',
+    'caramellatte',
+    'abyss',
+    'silk'
+  ]
+
+  const handleResetPersonalDetails = () => setPersonnalDetails({
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    photoUrl: '',
+    postSeeking: '',
+    description: ''
+  })
+
+  const handleResetExperience = () => setExperience([])
+  const handleResetEducations = () => setEducations([])
+  const handleResetLanguages = () => setLanguages([])
+
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div>
+      <div className="hidden lg:block">
+        <section className="flex items-center h-screen">
+          {/* // Formulaire du CV */}
+          <div className="w-1/3 h-full p-10 bg-base-200 scrollable no-scrollbar">
+            <div className="mb-4 flex justify-between items-center">
+              <h1 className="text-2xl font-bold italic">
+                Générateur de
+                <span className="text-primary">CV</span>
+              </h1>
+              <button className="btn btn-primary">
+                Prévisualiser
+                <Eye className="w-4" />
+              </button>
+            </div>
+            <div className="flex flex-col gap-6 rounded-lg">
+              <div className="flex justify-between items-center">
+                <h1 className="badge badge-primary badge-outline">Qui êtes-vous</h1>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleResetPersonalDetails}>
+                  <RotateCw className="w-4" />
+                </button>
+              </div>
+              <PersonalDetailsForm
+                personalDetails={personalDetails}
+                setPersonnalDetails={setPersonnalDetails}
+                setFile={setFile}
+              />
+
+              <div className="flex justify-between items-center">
+                <h1 className="badge badge-primary badge-outline">Expériences</h1>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleResetExperience}
+                >
+                  <RotateCw className="w-4" />
+                </button>
+              </div>
+
+              <ExperienceForm
+                experience={experiences}
+                setExperience={setExperience}
+              />
+
+              <div className="flex justify-between items-center">
+                <h1 className="badge badge-primary badge-outline">Educations</h1>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleResetEducations}
+                >
+                  <RotateCw className="w-4" />
+                </button>
+              </div>
+
+              <EducationForm 
+                educations={educations}
+                setEducations={setEducations}
+              />
+
+              <div className="flex justify-between items-center">
+                <h1 className="badge badge-primary badge-outline">Langues</h1>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleResetLanguages}
+                >
+                  <RotateCw className="w-4" />
+                </button>
+              </div>
+
+              <LanguageForm 
+                languages={languages}
+                setLanguages={setLanguages}
+              />
+
+            </div>
+          </div>
+
+          {/* Previsualisation du CV */}
+          <div className="w-2/3 h-full bg-base-100 bg-[url('/file.svg')] bg-cover bg-center scrollable-preview relative">
+
+            <div className="flex items-center justify-center fixed z-[9999] top-5 right-5">
+              <input
+                type="range"
+                min={50}
+                max={200}
+                value={zoom}
+                onChange={(e) => setZoom(Number(e.target.value))}
+                className="range range-xs range-primary"
+              />
+              <p className="ml-4 text-sm text-primary">{zoom}%</p>
+            </div>
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+              className="select select-bordered fixed z-[9999] select-sm top-12 right-5 "
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              {themes.map((themeName) => (
+                <option key={themeName} value={themeName}>
+                  {themeName}
+                </option>
+              ))}
+            </select>
+
+            <div
+              className="flex justify-center items-center"
+              style={{ transform: `scale(${zoom / 200})` }}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <CVPreview
+                personalDetails={personalDetails}
+                file={file}
+                theme={theme}
+                experiences={experiences}
+                educations={educations}
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="lg:hidden">
+        <div className="hero bg-base-200 min-h-screen">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-3xl font-bold">Désolé le Générateur de CV n'est que disponible sur ordinateur</h1>
+              <Image
+                src="/sorry.gif"
+                alt="Computer"
+                width={300}
+                height={200}
+                className="mx-auto my-6"
+              />
+              <p className="py-6">
+                Pour créer votre CV, veuillez utiliser votre ordinateur.
+                Nous vous remercions pour votre compréhension
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
