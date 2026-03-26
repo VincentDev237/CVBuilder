@@ -1,7 +1,7 @@
-import { Education, Experience, PersonalDetails } from "@/type";
+import { Education, Experience, Language, PersonalDetails, Skill, Hobby } from "@/type";
 import React from "react";
 import Image from "next/image";
-import { Phone, Mail, MapPin, BriefcaseBusiness, GraduationCap } from "lucide-react";
+import { Phone, Mail, MapPin, BriefcaseBusiness, GraduationCap, Star } from "lucide-react";
 
 type Props = {
     personalDetails: PersonalDetails;
@@ -9,6 +9,11 @@ type Props = {
     theme: string;
     experiences: Experience[];
     educations: Education[];
+    languages: Language[];
+    skills: Skill[];
+    hobbies: Hobby[];
+    download?: boolean;
+    ref?: any;
 }
 
 function formData(dateString: string): string {
@@ -17,9 +22,38 @@ function formData(dateString: string): string {
     return date.toLocaleDateString('fr-FR', options);
 }
 
-const CVPreview: React.FC<Props> = ({ personalDetails, file, theme, experiences, educations }) => {
+const getStarRating = (proficiency: string) => {
+    const maxStars = 5;
+    let filledStars = 0;
+
+    switch (proficiency) {
+        case 'Débutant':
+            filledStars = 1;
+            break;
+        case 'Intermédiaire':
+            filledStars = 3;
+            break;
+        case 'Avancé':
+            filledStars = 5;
+            break;
+        default:
+            filledStars = 0;
+    }
     return (
-        <div className={`flex p-16 w-[950px] h-[1200px] shadow-lg`} data-theme={theme}>
+        <>
+            {Array.from({ length: filledStars }, (_, index) => (
+                <Star key={index} className={`text-primary`} />
+            ))}
+            {Array.from({ length: maxStars - filledStars }, (_, index) => (
+                <Star key={index + filledStars} className="text-gray-300" />
+            ))}
+        </>
+    )
+}
+
+const CVPreview: React.FC<Props> = ({ personalDetails, file, theme, experiences, educations, languages, skills, hobbies, download, ref }) => {
+    return (
+        <div ref={ref} className={`flex p-16 w-[950px] h-[1200px] shadow-lg ${download ? 'mb-10' : ''}`} data-theme={theme}>
             <div className="flex flex-col w-1/3">
                 <div className="h-80 rounded-full border-8 overflow-hidden border-primary">
                     {file && (
@@ -81,6 +115,52 @@ const CVPreview: React.FC<Props> = ({ personalDetails, file, theme, experiences,
                                 </div>
                             </li>
                         </ul>
+                    </div>
+
+                    <div className="mt-6">
+                        <h1 className="uppercase font-bold my-2">
+                            Compétences
+                        </h1>
+                        <div className="flex flex-wrap gap-2">
+                            {skills.map((skill, index) => (
+                                <p key={index} className="badge badge-primary uppercase">
+                                    {skill.name}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-6">
+                        <h1 className="uppercase font-bold my-2">
+                            Langues
+                        </h1>
+                        <div className="flex flex-col space-y-2">
+                            {languages.map((lang, index) => (
+                                <div key={index}>
+                                    <span className="capitalize font-semibold">
+                                        {lang.language}
+                                    </span>
+                                    <div className="flex mt-2">
+                                        {getStarRating(lang.proficiency)}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-6">
+                        <h1 className="uppercase font-bold my-2">
+                            Loisirs
+                        </h1>
+                        <div className="flex flex-col space-y-2">
+                            {hobbies.map((hobby, index) => (
+                                <div key={index}>
+                                    <span className="capitalize">
+                                        {hobby.name}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,7 +259,7 @@ const CVPreview: React.FC<Props> = ({ personalDetails, file, theme, experiences,
                         </ul>
                     </div>
 
-                    
+
                 </section>
             </div>
         </div>

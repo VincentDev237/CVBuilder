@@ -1,14 +1,20 @@
 "use client";
-import { Eye, RotateCw } from "lucide-react";
+import { Eye, RotateCw, Save } from "lucide-react";
 import Image from "next/image";
 import PersonalDetailsForm from "./components/PersonnalDetailsForm";
 import ExperienceForm from "./components/ExperienceForm";
 import EducationForm from "./components/EducationForm";
 import LanguageForm from "./components/LanguageForm";
-import { Experience, PersonalDetails, Education, Language } from "@/type";
-import { useState } from "react";
-import { educationsPreset, experiencesPreset, languagesPreset, personalDetailsPreset } from "@/presets";
+import { Experience, PersonalDetails, Education, Language, Skill, Hobby } from "@/type";
+import { useEffect, useState } from "react";
+import { educationsPreset, experiencesPreset, hobbiesPreset, languagesPreset, personalDetailsPreset, skillsPreset } from "@/presets";
 import CVPreview from "./components/CVPreview";
+import SkillForm from "./components/SkillForm";
+import HobbyForm from "./components/HobbyForm";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
+import { useRef } from "react";
+import confetti from "canvas-confetti";
 
 export default function Home() {
   const [personalDetails, setPersonnalDetails] = useState<PersonalDetails>(personalDetailsPreset)
@@ -18,6 +24,18 @@ export default function Home() {
   const [experiences, setExperience] = useState<Experience[]>(experiencesPreset)
   const [educations, setEducations] = useState<Education[]>(educationsPreset)
   const [languages, setLanguages] = useState<Language[]>(languagesPreset)
+  const [skills, setSkills] = useState<Skill[]>(skillsPreset)
+  const [hobbies, setHobbies] = useState<Hobby[]>(hobbiesPreset)
+
+  useEffect(() => {
+    const defaultImageUrl = '/profile.jpeg'
+    fetch(defaultImageUrl)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const defaultFile = new File([blob], "profile.jpeg", { type: blob.type })
+        setFile(defaultFile)
+      })
+  }, [])
 
   const themes = [
     'light',
@@ -70,6 +88,50 @@ export default function Home() {
   const handleResetExperience = () => setExperience([])
   const handleResetEducations = () => setEducations([])
   const handleResetLanguages = () => setLanguages([])
+  const handleResetSkills = () => setSkills([])
+  const handleResetHobbies = () => setHobbies([])
+
+  const cvPreviewRef = useRef(null)
+
+  const handleDownloadPdf = async () => {
+    const element = cvPreviewRef.current;
+    if(element) {
+      try {
+        const canvas = await html2canvas(element, {
+          scale : 3,
+          useCORS: true,
+        })
+        const imgData = canvas.toDataURL('image/png')
+        const pdf = new jsPDF({
+          orientattion: "portrait",
+          unit: "mm",
+          format: "A4"
+        })
+
+        const pdfWidth = pdf.internal.pageSize.getWidth()
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+        // pdf.addImage(imgData, 'PNG', 0, 0, 211, 298);
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('cv.pdf')
+
+        const modal = document.getElementById('my_modal_3') as HTMLDialogElement
+        if(modal){
+          modal.close()
+        }
+
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          zIndex: 9999
+        })
+
+      } catch (error) {
+        console.error("Erreur lors de la génération du PDF :", error)
+      }
+    }
+  }
 
 
   return (
@@ -83,10 +145,15 @@ export default function Home() {
                 Générateur de
                 <span className="text-primary">CV</span>
               </h1>
-              <button className="btn btn-primary">
+              <button
+                className="btn btn-primary"
+                onClick={() => (
+                  document.getElementById('my_modal_3') as HTMLDialogElement).showModal()}
+              >
                 Prévisualiser
                 <Eye className="w-4" />
               </button>
+
             </div>
             <div className="flex flex-col gap-6 rounded-lg">
               <div className="flex justify-between items-center">
@@ -128,7 +195,7 @@ export default function Home() {
                 </button>
               </div>
 
-              <EducationForm 
+              <EducationForm
                 educations={educations}
                 setEducations={setEducations}
               />
@@ -143,10 +210,45 @@ export default function Home() {
                 </button>
               </div>
 
-              <LanguageForm 
+              <LanguageForm
                 languages={languages}
                 setLanguages={setLanguages}
               />
+
+
+              <div className="flex justify-between">
+                <div className="w-1/2">
+                  <div className="flex justify-between items-center">
+                    <h1 className="badge badge-primary badge-outline">Compétences</h1>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={handleResetSkills}
+                    >
+                      <RotateCw className="w-4" />
+                    </button>
+                  </div>
+                  <SkillForm
+                    skills={skills}
+                    setSkills={setSkills}
+                  />
+                </div>
+
+                <div className="ml-4 w-1/2">
+                  <div className="flex justify-between items-center">
+                    <h1 className="badge badge-primary badge-outline">Loisirs</h1>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={handleResetHobbies}
+                    >
+                      <RotateCw className="w-4" />
+                    </button>
+                  </div>
+                  <HobbyForm
+                    hobbies={hobbies}
+                    setHobbies={setHobbies}
+                  />
+                </div>
+              </div>
 
             </div>
           </div>
@@ -187,10 +289,46 @@ export default function Home() {
                 theme={theme}
                 experiences={experiences}
                 educations={educations}
+                languages={languages}
+                skills={skills}
+                hobbies={hobbies}
               />
             </div>
           </div>
         </section>
+
+        <dialog id="my_modal_3" className="modal">
+          <div className="modal-box w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <div className="mt-5">
+              <div className="flex justify-end mb-5">
+                <button onClick={handleDownloadPdf} className="btn btn-primary">
+                  Télécharger
+                  <Save className="w-4" />
+                </button>
+              </div>
+
+              <div className="w-full max-x-full overflow-auto">
+                <div className="w-full max-x-full flex justify-center items-center">
+                  <CVPreview
+                    personalDetails={personalDetails}
+                    file={file}
+                    theme={theme}
+                    experiences={experiences}
+                    educations={educations}
+                    languages={languages}
+                    skills={skills}
+                    hobbies={hobbies}
+                    download={true}
+                    ref={cvPreviewRef}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </dialog>
       </div>
 
       <div className="lg:hidden">

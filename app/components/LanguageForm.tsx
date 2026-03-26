@@ -1,5 +1,6 @@
 
 import { Language } from "@/type";
+import { Plus } from "lucide-react";
 import React, { useState } from "react";
 
 type Props = {
@@ -14,7 +15,7 @@ const LanguageForm: React.FC<Props> = ({ languages, setLanguages }) => {
         proficiency: '',
     })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: keyof Language) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, field: keyof Language) => {
         setNewLanguage({ ...newLanguage, [field]: e.target.value })
     }
 
@@ -27,7 +28,32 @@ const LanguageForm: React.FC<Props> = ({ languages, setLanguages }) => {
     }
 
     return (
-        <div></div>
+        <div className="space-y-4">
+            <input
+                type="text"
+                placeholder="Langue"
+                value={newLanguage.language}
+                onChange={(e) => handleChange(e, 'language')}
+                className="input input-borderred w-full"
+            />
+            <select 
+                value={newLanguage.proficiency}
+                onChange={(e) => handleChange(e, 'proficiency')}
+                className="select select-bordered w-full"
+            >
+                <option value="">Niveau de compétence</option>
+                <option value="beginner">Débutant</option>
+                <option value="intermediate">Intermédiaire</option>
+                <option value="advanced">Avancé</option>
+            </select>
+            <button
+                onClick={handleAddLanguage}
+                className="btn btn-primary mt-4"
+            >
+                Ajouter
+                <Plus className="w-4" />
+            </button>
+        </div>
     )
 }
 
