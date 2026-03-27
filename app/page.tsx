@@ -335,7 +335,7 @@ export default function Home() {
         <div className="hero bg-base-200 min-h-screen">
           <div className="hero-content text-center">
             <div className="max-w-md">
-              <h1 className="text-3xl font-bold">Désolé le Générateur de CV n'est que disponible sur ordinateur</h1>
+              <h1 className="text-3xl font-bold">Désolé le Générateur de CV n'est disponible que sur ordinateur</h1>
               <Image
                 src="/sorry.gif"
                 alt="Computer"
