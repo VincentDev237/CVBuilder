@@ -94,3 +94,5 @@ Ce projet est sous licence MIT.
 ## Support
 
 Pour des questions ou des problèmes, ouvrez une issue sur [GitHub](https://github.com/votre-utilisateur/cvbuilder/issues).
+
+Vous pouvez également me joindre sur WhatsApp au (https://wa.me/670199002)

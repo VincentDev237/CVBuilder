@@ -103,7 +103,7 @@ export default function Home() {
         })
         const imgData = canvas.toDataURL('image/png')
         const pdf = new jsPDF({
-          orientattion: "portrait",
+          orientation: "portrait",
           unit: "mm",
           format: "A4"
         })
