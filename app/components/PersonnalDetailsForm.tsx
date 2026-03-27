@@ -73,7 +73,7 @@ const PersonnalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonnalDe
                 value={personalDetails.description}
                 onChange={(e) => handleChange(e, 'description')}
                 className="input input-bordered w-full"
-            > </textarea>
+            />
         </div>
     );
 }

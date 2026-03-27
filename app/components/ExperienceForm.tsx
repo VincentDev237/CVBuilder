@@ -81,7 +81,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperience }) => {
                         value={newExperience.description}
                         onChange={(e) => handleChange(e, 'description')}
                         className="input input-bordered w-full"
-                    > </textarea>
+                    />
                 </div>
 
                 <button

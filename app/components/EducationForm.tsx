@@ -81,7 +81,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
                     value={newEducation.description}
                     onChange={(e) => handleChange(e, 'description')}
                     className="input input-bordered w-full"
-                > </textarea>
+                />
             </div>
 
             <button
